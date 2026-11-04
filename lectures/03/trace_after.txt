@@ -1,0 +1,21 @@
+[model] gemini-3.5-flash-lite
+LoRAとQLoRAは、いずれも大規模言語モデル（LLM）などの事前学習済みモデルを効率的にファインチューニング（追加学習）するための手法（PEFT：Parameter-Efficient Fine-Tuning）です。
+
+主な違いは以下の通りです：
+
+1. **LoRA（Low-Rank Adaptation）**
+   - モデルの重み行列に「低ランクの近似行列」を並行して追加し、その部分だけを学習します。
+   - 元のモデルの重みは固定（凍結）し、学習パラメータ数を大幅に削減します。
+   - 学習時には通常の精度（通常はFP16やBF16など）で計算を行うため、それなりのGPUメモリが必要になります。
+
+2. **QLoRA（Quantized LoRA）**
+   - LoRAの効率性をさらに高め、より少ないGPUメモリで学習できるようにした発展版です。
+   - 元のモデルの重みを **4ビット（4-bit）に量子化（圧縮）** して固定し、その上でLoRAの学習を行います。
+   - 量子化による精度低下を防ぐため、「NormalFloat4 (NF4)」という独自のデータ型や、「二重量子化（Double Quantization）」などの技術が使われています。
+   - 消費メモリを劇的に削減できるため、コンシューマー向けのGPU（VRAMの少ないグラフィックボード）でも大モデルのファインチューニングが可能になります。
+
+---
+関連する回：第3回（または関連するPEFTを扱う回）
+
+--- trace ---
+[usage] RunUsage(cost=Decimal('0.0009492'), details={'text_prompt_tokens': 414}, input_text_tokens=414, input_tokens=414, output_tokens=330, requests=1)
